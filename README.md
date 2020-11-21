@@ -17,6 +17,10 @@ curl -fsSL https://raw.githubusercontent.com/nodenv/nodenv-installer/master/bin/
 /home/v/.nodenv/versions/14.15.1/bin/npm i
 ```
 
+## Market address
+
+![serum-market-address.png](static/serum-market-address.png)
+
 ## References
 
 про биржу - https://docs.google.com/document/d/1isGJES4jzQutI0GtQGuqtrBUqeHxl_xJNXdtOv4SdII/edit
