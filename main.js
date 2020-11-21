@@ -3,7 +3,8 @@ import { Market } from '@project-serum/serum';
 
 const main = async () => {
     let connection = new Connection('https://testnet.solana.com');
-    let marketAddress = new PublicKey('...');
+    // https://github.com/project-serum/serum-js/issues/1
+    let marketAddress = new PublicKey('3v9kjrBLN7Awr9BGC2qmFnWLM1EgMAdNm2rXLQFUcQ2d): 6ibUz1BqSD3f8XP4wEGwoRH4YbYRZ1KDZBeXmrp3KosD');
     let market = await Market.load(connection, marketAddress);
 
 // Fetching orderbooks
