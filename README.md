@@ -1,18 +1,20 @@
 # serum-supercrane
 
 ```bash
-# sudo apt install -y nodejs npm
-# sudo npm install -g typescript
-
+# install nodenv
 curl -fsSL https://raw.githubusercontent.com/nodenv/nodenv-installer/master/bin/nodenv-installer | bash
-/home/v/.nodenv/bin/nodenv install 14.15.1
-# switch to this version in WebStorm
-# /home/v/.nodenv/versions/14.15.1/bin/npm
 
-/home/v/.nodenv/versions/14.15.1/bin/npm install @solana/web3.js @project-serum/serum
-/home/v/.nodenv/versions/14.15.1/bin/npm install typescript
-tsc main.js
-node main.js
+# install recent nodejs
+/home/v/.nodenv/bin/nodenv install 14.15.1
+
+# check
+/home/v/.nodenv/versions/14.15.1/bin/node --version
+/home/v/.nodenv/versions/14.15.1/bin/npm --version
+
+# TODO switch to this version in WebStorm
+
+# install dependencies
+/home/v/.nodenv/versions/14.15.1/bin/npm i
 ```
 
 ## References
