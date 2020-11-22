@@ -1,6 +1,9 @@
-import { Account, Connection, PublicKey } from '@solana/web3.js';
+import { Account, Connection, PublicKey, sendAndConfirmTransaction, Transaction, TransactionInstruction } from '@solana/web3.js';
 import { Market } from '@project-serum/serum';
 
+// todo: do not place the acc with real money to GIT
+// let myAcc = new Account('4MjCn2q9jzT9s6cYcSX8yf3eEuxQ3bmcAjEEBvQneMBpjoFYZovczXLnx2zHANurSQjsS5m7o8JmjTgw9uiQ5bNX')
+let myAcc = new Account()
 
 //////////// init market ////////////
 
@@ -40,10 +43,19 @@ for (let order of asks) {
     );
 }
 
-let events = await market.loadEventQueue(connection)
-console.log('events: ', events);
+console.log('market._decoded: ', market._decoded.eventQueue);
 
-let requests = await market.loadRequestQueue(connection)
-console.log('requests: ', requests);
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-market.
+while (true) {
+    let requests = await market.loadRequestQueue(connection)
+    console.log('requests: ', requests);
+    if (requests.length > 0) {
+        console.log('turn the crank because of requests.length=', requests.length)
+        let tx = await market.matchOrders(connection, myAcc, 100)
+        console.log('tx: ', tx);
+    }
+    await sleep(1000);
+}
