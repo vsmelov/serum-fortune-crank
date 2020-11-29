@@ -9,7 +9,7 @@ let myAcc = new Account()
 
 let connection = new Connection('https://solana-api.projectserum.com');
 let programAddress = new PublicKey('EUqojwWA2rd19FZrzeBncJsm38Jm1hEhE3zsmX3bRc2o');
-let marketAddress = new PublicKey('EXnGBBSamqzd3uxEdRLUiYzjJkTwQyorAaFXdfteuGXe');
+let marketAddress = new PublicKey('EXnGBBSamqzd3uxEdRLUiYzjJkTwQyorAaFXdfteuGXe');  // btc/usdt
 console.log('programAddress:', programAddress.toString());
 console.log('marketAddress:', marketAddress.toString());
 let market = await Market.load(connection, marketAddress, undefined, programAddress);
@@ -49,13 +49,35 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+let cnt_empty = 0
+let cnt_not_empty = 0
+
+let avgElapsedMs = undefined
+let alpha = 0.1
+
 while (true) {
+    let startTime = new Date();
     let requests = await market.loadRequestQueue(connection)
-    console.log('requests: ', requests);
-    if (requests.length > 0) {
-        console.log('turn the crank because of requests.length=', requests.length)
-        let tx = await market.matchOrders(connection, myAcc, 100)
-        console.log('tx: ', tx);
+    let endTime = new Date();
+    let elapsedMs = endTime - startTime;
+
+    if (avgElapsedMs === undefined) {
+        avgElapsedMs = elapsedMs
+    } else {
+        avgElapsedMs = Math.round((1-alpha) * avgElapsedMs + alpha * elapsedMs )
     }
-    await sleep(1000);
+
+    let hit_rate_percentage_f2 = Math.round(100 * cnt_not_empty / (cnt_not_empty + cnt_empty) * 100) / 100
+    console.log(
+        'elapsed: ' + elapsedMs + 'ms',
+        'avgElapsed: ' + avgElapsedMs + 'ms',
+        'hitrate: ' + hit_rate_percentage_f2 + '%',
+        'requests: ' + requests
+    );
+    if (requests.length > 0) {
+        cnt_not_empty += 1;
+        console.log('LETS TURN THE CRANK because of requests.length=', requests.length)
+    } else {
+        cnt_empty += 1;
+    }
 }
